@@ -1,25 +1,19 @@
 package br.org.sesisenai.suggestions.dtos;
 
+import br.org.sesisenai.suggestions.entities.Suggestion;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
-@AllArgsConstructor
-public class SuggestionResponse {
+public class SuggestionResponse extends SuggestionAbstract{
 
     private Long id;
-    private String title;
-    private String description;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime sendDate;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updateDate;
+    public SuggestionResponse(Suggestion suggestion) {
+        BeanUtils.copyProperties(suggestion, this);
+    }
 }
