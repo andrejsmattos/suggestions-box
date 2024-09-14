@@ -9,9 +9,13 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class SuggestionResponse extends SuggestionAbstract{
 
     private Long id;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime sendDate;
 
     public SuggestionResponse(Suggestion suggestion) {
         BeanUtils.copyProperties(suggestion, this);

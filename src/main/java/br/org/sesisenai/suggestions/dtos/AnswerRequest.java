@@ -5,6 +5,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class SuggestionRequest extends SuggestionAbstract{
+public class AnswerRequest extends AnswerAbstract {
 
 }
