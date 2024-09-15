@@ -7,9 +7,14 @@ import br.org.sesisenai.suggestions.repositories.SuggestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -19,11 +24,30 @@ public class SuggestionServiceImpl implements SuggestionService {
     private final SuggestionRepository repository;
 
     @Override
+    public Page<SuggestionResponse> findAll(String title, int pageNo, int pageSize) {
+        log.info("Finding all suggestions");
+
+        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by("updateDate").descending());
+        Page<Suggestion> suggestions;
+        if (title != null && !title.isEmpty()) {
+            suggestions = repository.findAllByTitleContainingIgnoreCase(title, pageable);
+        } else {
+            suggestions = repository.findAll(pageable);
+        }
+        repository.findAll(pageable);
+        log.info("Found {} suggestions", suggestions.getNumberOfElements());
+
+        return suggestions.map(SuggestionResponse::new);
+    }
+
+
+    @Override
     public SuggestionResponse create(SuggestionRequest request) {
         log.info("Creating suggestion: {}", request.getTitle());
         Suggestion suggestion = new Suggestion();
         BeanUtils.copyProperties(request, suggestion);
         suggestion.setSendDate(LocalDateTime.now());
+        suggestion.setUpdateDate(LocalDateTime.now());
 
         SuggestionResponse response = save(suggestion);
         log.info("Created suggestion: {}", suggestion.getTitle());

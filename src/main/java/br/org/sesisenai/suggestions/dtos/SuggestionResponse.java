@@ -4,8 +4,10 @@ import br.org.sesisenai.suggestions.entities.Suggestion;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -19,5 +21,9 @@ public class SuggestionResponse extends SuggestionAbstract{
 
     public SuggestionResponse(Suggestion suggestion) {
         BeanUtils.copyProperties(suggestion, this);
+    }
+
+    public static List<SuggestionResponse> from(Page<Suggestion> suggestions) {
+        return suggestions.map(SuggestionResponse::new).getContent();
     }
 }
