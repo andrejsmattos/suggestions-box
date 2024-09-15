@@ -1,9 +1,11 @@
 package br.org.sesisenai.suggestions.entities;
 
+import br.org.sesisenai.suggestions.dtos.AnswerRequest;
 import br.org.sesisenai.suggestions.dtos.SuggestionResponse;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
@@ -23,5 +25,13 @@ public class Answer {
 
     private String answer;
     private LocalDateTime sendDate;
+
+    public Answer(AnswerRequest request) {
+        BeanUtils.copyProperties(request, this);
+    }
+
+    public Long getIdSuggestion() {
+        return suggestion.getId();
+    }
 }
 

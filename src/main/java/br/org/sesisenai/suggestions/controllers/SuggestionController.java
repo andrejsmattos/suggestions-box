@@ -10,9 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -30,6 +27,15 @@ public class SuggestionController {
             Page<SuggestionResponse> response = service.findAll(title, pageable.getPageNumber(), pageable.getPageSize());
             log.info("GET /suggestions -> End");
             return response;
+    }
+
+    @GetMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public SuggestionResponse getById(@PathVariable Long id) {
+        log.info("GET /suggestions/{} -> Begin", id);
+        SuggestionResponse response = service.findById(id);
+        log.info("GET /suggestions/{} -> End", id);
+        return response;
     }
 
     @PostMapping

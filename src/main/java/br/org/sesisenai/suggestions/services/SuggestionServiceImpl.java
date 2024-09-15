@@ -40,6 +40,15 @@ public class SuggestionServiceImpl implements SuggestionService {
         return suggestions.map(SuggestionResponse::new);
     }
 
+    @Override
+    public SuggestionResponse findById(Long id) {
+        log.info("Finding suggestion by id: {}", id);
+        Suggestion suggestion = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Suggestion not found"));
+        log.info("Found suggestion by id: {}", id);
+        return new SuggestionResponse(suggestion);
+    }
+
 
     @Override
     public SuggestionResponse create(SuggestionRequest request) {
