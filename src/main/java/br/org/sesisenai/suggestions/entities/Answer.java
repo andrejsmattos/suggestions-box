@@ -5,6 +5,7 @@ import br.org.sesisenai.suggestions.dtos.SuggestionResponse;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class Answer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ToString.Exclude
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "suggestion_id", nullable = false)
     private Suggestion suggestion;

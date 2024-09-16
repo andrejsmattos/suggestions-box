@@ -4,6 +4,7 @@ import br.org.sesisenai.suggestions.dtos.AnswerRequest;
 import br.org.sesisenai.suggestions.dtos.AnswerResponse;
 import br.org.sesisenai.suggestions.entities.Answer;
 import br.org.sesisenai.suggestions.entities.Suggestion;
+import br.org.sesisenai.suggestions.exceptions.notfound.SuggestionNotFound;
 import br.org.sesisenai.suggestions.repositories.AnswerRepository;
 import br.org.sesisenai.suggestions.repositories.SuggestionRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,9 @@ public class AnswerServiceImpl implements AnswerService{
 
     @Override
     public AnswerResponse create (Long id, AnswerRequest request) {
-        log.info("Creating answer for suggestion with id: {}", request.getIdSuggestion());
+        log.info("Creating answer: {}", request.getAnswer());
         Suggestion suggestion = suggestionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Suggestion not found"));
+                .orElseThrow(() -> new SuggestionNotFound(id));
         suggestion.setUpdateDate(LocalDateTime.now());
 
         Answer answer = new Answer(request);
@@ -34,7 +35,7 @@ public class AnswerServiceImpl implements AnswerService{
         answer.setSendDate(LocalDateTime.now());
 
         AnswerResponse response = save(answer);
-        log.info("Created answer for suggestion with id: {}", request.getIdSuggestion());
+        log.info("Created answer: {}", request.getAnswer());
         return response;
     }
 

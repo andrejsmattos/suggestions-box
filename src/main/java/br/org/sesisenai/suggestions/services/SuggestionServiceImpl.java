@@ -1,8 +1,10 @@
 package br.org.sesisenai.suggestions.services;
 
+import br.org.sesisenai.suggestions.dtos.AnswerResponse;
 import br.org.sesisenai.suggestions.dtos.SuggestionRequest;
 import br.org.sesisenai.suggestions.dtos.SuggestionResponse;
 import br.org.sesisenai.suggestions.entities.Suggestion;
+import br.org.sesisenai.suggestions.exceptions.notfound.SuggestionNotFound;
 import br.org.sesisenai.suggestions.repositories.SuggestionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +46,10 @@ public class SuggestionServiceImpl implements SuggestionService {
     public SuggestionResponse findById(Long id) {
         log.info("Finding suggestion by id: {}", id);
         Suggestion suggestion = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Suggestion not found"));
+                .orElseThrow(() -> new SuggestionNotFound(id));
+//        List<AnswerResponse> answers = suggestion.getAnswer().stream()
+//                .map(AnswerResponse::new)
+//                .toList();
         log.info("Found suggestion by id: {}", id);
         return new SuggestionResponse(suggestion);
     }
